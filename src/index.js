@@ -2,20 +2,31 @@
 
 const express = require("express");
 const morgan = require("morgan");
+const passport = require("passport");
 const {exphbs, engine} = require("express-handlebars");
 const path = require("path");
 const session = require("express-session");
 const conexion = require("./conexion");
 
+
 //Inicializar
+
 const app = express();
 require('./conexion');
+require('./lib/autenticar');
 
 //middlewares
 
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+app.use(session({
+    secret: 'secretoenlamontaña',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //configuración
 
