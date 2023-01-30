@@ -1,7 +1,7 @@
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const conexion = require('../conexion');
+const {conexion, llaves} = require('../conexion');
 const helpers = require('./helpers');
 
 passport.use('login-local', new LocalStrategy({
@@ -34,6 +34,7 @@ passport.deserializeUser(async (req, codigo, done) =>{
     let usuario;
     const usuarios = await conexion.query('SELECT * FROM usuarios WHERE usuario=?', [codigo]);
     usuario = usuarios[0];
+    console.log(usuarios);
     done(null, usuario);
     console.log("usuario deserializado");
 });

@@ -7,7 +7,7 @@ const {exphbs, engine} = require("express-handlebars");
 const path = require("path");
 const session = require("express-session");
 const mySQLStore = require('express-mysql-session')(session);
-const conexion = require("./conexion");
+const {conexion, llaves} = require("./conexion");
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 require ('dotenv').config();
@@ -29,7 +29,7 @@ app.use(session({
     resave: true,
     saveUninitialized: false,
     rolling: true,
-    store: new mySQLStore(conexion),
+    store: new mySQLStore(llaves),
     cookie: {
         secure: false,
         maxAge: 1200000,

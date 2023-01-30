@@ -3,12 +3,14 @@ const path = require('path');
 const { promisify } = require('util');
 require ('dotenv').config();
 
-const conexion = mysql.createPool({
-    host: process.env.HOST,
-    database: process.env.DATABASE,
-    user: process.env.USER,
-    password: process.env.PASSWORD
-});
+const llaves = {
+    "host": process.env.HOST,
+    "database": process.env.DATABASE,
+    "user": process.env.USER,
+    "password": process.env.PASSWORD
+};
+
+const conexion = mysql.createPool(llaves);
 
 conexion.getConnection((err, connection) => {
     if (err) {
@@ -22,13 +24,13 @@ conexion.getConnection((err, connection) => {
             console.error('La conexión a la BD fue rechazada');
         }
     }
-
-    if(connection) connection.release();
+    if(connection) {
+        connection.release();
         console.log('La BD está conectada');
-        
+    }
     return;
 });
 
 conexion.query = promisify(conexion.query);
 
-module.exports = conexion;
+module.exports = {conexion, llaves};
